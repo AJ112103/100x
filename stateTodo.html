@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <body>
+
+        <input type="text"></input>
+        <button onclick="addTodo()">Add todo!</button>
+        <button onclick="deleteFirstTodo()">Delete first todo</button>
+        <button onclick="deleteLastTodo()">Delete last todo</button>
+        <div id="todos"></div>
+
+        <script>
+
+          let todos = [];
+
+          function addTodo() {
+            const task = document.querySelector("input").value
+            if(task.trim() == ""){
+              alert("task is empty")
+            }
+            else {
+              todos.push({
+                title: task
+            })
+            render();}
+          }
+
+          function deleteTodo(index){
+            todos.splice(index, 1);
+            render();
+          }
+
+          function editTodo(index){
+            const newTask = prompt("Edit task:", todos[index].title)
+            if(newTask !== null && newTask.trim() !== ""){
+              todos[index].title = newTask
+              render();
+            }
+          }
+
+          function deleteFirstTodo(){
+            todos.splice(0, 1);
+            render();
+          }
+
+          function deleteLastTodo(){
+            todos.splice(todos.length -1, 1);
+            render();
+          }
+
+          function createTodoComponent(todo, index){
+            const h1 = document.createElement("h1")
+            const button = document.createElement("button")
+            const editButton = document.createElement("button")
+            const parent = document.createElement("div")
+            h1.innerHTML = todo.title
+            button.innerHTML = "Delete"
+            button.onclick = () => deleteTodo(index)
+            editButton.innerHTML = "Edit"
+            editButton.onclick = () => editTodo(index)
+            parent.appendChild(h1)
+            parent.appendChild(button)
+            parent.appendChild(editButton)
+            return parent
+          }
+
+          function render() {
+            document.querySelector("#todos").innerHTML = ""
+
+            for(let i=0; i<todos.length; i++){
+                const todo = createTodoComponent(todos[i], i)
+                document.querySelector("#todos").appendChild(todo)
+            }
+            document.querySelector("input").value = ""
+          }
+
+        </script>
+
+      </body>
+</html>
